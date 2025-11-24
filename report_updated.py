@@ -109,8 +109,8 @@ if uploaded_files:
         use_container_width=True
     )
 
-    # ==============================
-    # Monthly Trend Chart
+        # ==============================
+    # Monthly False Check-in Trend
     # ==============================
     st.subheader("Monthly False Check-in Trend")
     month_summary = df.groupby("Month").agg(
@@ -128,6 +128,7 @@ if uploaded_files:
         text="False_%",
         title="False Check-ins (%) Over Months"
     )
+    fig_month.update_traces(textposition="top center")  # 👈 text above dots
     st.plotly_chart(fig_month, use_container_width=True)
 
         # ==============================
