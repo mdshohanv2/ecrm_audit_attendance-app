@@ -89,6 +89,25 @@ if uploaded_files:
     col5.metric("False Check-ins", f"{total_false} ({false_pct:.1f}%)")
 
     # ==============================
+    # Monthly Summary Across All Months
+    # ==============================
+    st.subheader("Monthly Summary for All Uploaded Months")
+    monthly_summary = df.groupby("Month").agg(
+        Total_Checkins=("OnTime", "count"),
+        False_Checkins=("OnTime", lambda x: (x == False).sum()),
+        RA_Count=("User", lambda x: df.loc[df["Month"] == x.name, "Role"].eq("RA").sum()),
+        SUP_Count=("User", lambda x: df.loc[df["Month"] == x.name, "Role"].eq("SUP").sum())
+    ).reset_index()
+
+    monthly_summary["False_%"] = (monthly_summary["False_Checkins"] /
+                                  monthly_summary["Total_Checkins"] * 100).round(1)
+
+    st.dataframe(
+        monthly_summary.sort_values("Month"),
+        use_container_width=True
+    )
+
+    # ==============================
     # Monthly Trend Chart
     # ==============================
     st.subheader("Monthly False Check-in Trend")
