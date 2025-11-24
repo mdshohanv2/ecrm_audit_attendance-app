@@ -109,6 +109,24 @@ if uploaded_files:
     )
     st.plotly_chart(fig_month, use_container_width=True)
 
+        # ==============================
+    # Monthly RA Count Trend
+    # ==============================
+    st.subheader("Monthly RA Count Trend")
+    ra_month_summary = df[df["Role"] == "RA"].groupby("Month")["User"].nunique().reset_index()
+    ra_month_summary = ra_month_summary.rename(columns={"User": "RA_Count"})
+
+    fig_ra_month = px.line(
+        ra_month_summary,
+        x="Month",
+        y="RA_Count",
+        markers=True,
+        text="RA_Count",
+        title="Number of RA Users Over Months"
+    )
+    fig_ra_month.update_traces(textposition="top center")
+    st.plotly_chart(fig_ra_month, use_container_width=True)
+
     # ==============================
     # Per-Month Detailed Analysis
     # ==============================
